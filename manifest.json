@@ -1,0 +1,37 @@
+{
+  "icons": [
+    {
+      "src": "drawable/icon-48.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+
+    {
+      "src": "drawable/icon-96.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+
+    {
+      "src": "drawable/icon-144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+
+    {
+      "src": "drawable/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+
+  "lang": "en-US",
+  "name": "Calculator",
+  "short_name": "Calculator",
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#e6eaea",
+  "background_color": "#f1f3f3"
+}
+y

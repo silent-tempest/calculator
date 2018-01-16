@@ -1,0 +1,240 @@
+<!-- saved from url=(0014)about:internet -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" manifest="manifest.appcache" lang="en-US">
+
+<head>
+  <title>Calculator</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="Cache-Control" content="no-cache" />
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="format-detection" content="adress=no" />
+  <meta name="application-name" content="Calculator" />
+  <meta name="apple-mobile-web-app-title" content="Calculator" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#e6eaea" />
+  <meta name="msapplication-navbutton-color" content="#e6eaea" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="msapplication-starturl" content="index.html" />
+  <link href="drawable/icon-192.png" rel="shortcut icon" sizes="192x192" />
+  <link href="drawable/icon-192.png" rel="apple-touch-icon" />
+  <link href="styles/main.css" rel="stylesheet" />
+  <link href="manifest.json" rel="manifest" type="application/manifest+json" />
+</head>
+
+<body>
+
+   <div class="display">
+    <div class="display-wrapper">
+      <div id="display" class="placeholder">0</div>
+    </div>
+
+    <div id="preview" class="placeholder">0</div>
+    <div class="error"></div>
+  </div>
+
+  <div class="controls">
+
+    <div class="flex-row top">
+
+      <div class="wrapper">
+        <button id="angles">deg</button>
+      </div>
+
+      <div class="wrapper">
+        <button id="inverse">inv</button>
+      </div>
+
+      <div class="wrapper">
+        <button id="mrc">mrc</button>
+      </div>
+
+      <div class="wrapper">
+        <button class="memory" value="add">m&plus;</button>
+      </div>
+
+      <div class="wrapper">
+        <button class="memory" value="subtract">m&minus;</button>
+      </div>
+
+    </div>
+
+    <div class="flex-container middle">
+
+      <div class="flex-row">
+
+        <div class="wrapper">
+          <button class="number" activity="factorial" type="constant" value="!">!</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="function" activity="function" type="none" value="root(" notation="&radic;" id="root"><sup>n</sup>&radic;</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="function" activity="function" type="none" value="sqrt(">&radic;</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="operation" activity="operation" type="operation" value="^">&#94;</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="brackets" value="brackets">( )</button>
+        </div>
+
+      </div>
+
+      <div class="flex-row">
+
+        <div class="wrapper inverse">
+          <button class="function" activity="function" type="none" value="sin(">sin</button>
+          <button class="function" activity="function" type="none" value="asin(" style="display: none;">sin<sup>-1</sup></button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="constant" value="pi">&pi;</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="constant" value="e">e</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="operation" activity="operation" type="operation" value="/">&divide;</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="operation" activity="operation" type="operation" value="*">&times;</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="flex-column left">
+
+      <div class="wrapper inverse">
+        <button class="function" activity="function" type="none" value="cos(">cos</button>
+        <button class="function" activity="function" type="none" value="acos(" style="display: none;">cos<sup>-1</sup></button>
+      </div>
+
+      <div class="wrapper inverse">
+        <button class="function" activity="function" type="none" value="tan(">tan</button>
+        <button class="function" activity="function" type="none" value="atan(" style="display: none;">tan<sup>-1</sup></button>
+      </div>
+
+      <div class="wrapper inverse">
+        <button class="function" activity="function" type="none" value="log(">ln</button>
+        <button class="function" activity="function" type="none" value="exp(" style="display: none;">exp</button>
+      </div>
+
+      <div class="wrapper inverse">
+        <button class="function" activity="function" type="none" value="log10(">lg</button>
+        <button class="function" activity="exp" value="10^" style="display: none;">10<sup style="vertical-align: top;">n</sup></button>
+      </div>
+
+    </div>
+
+    <div class="flex-container dial">
+
+      <div class="flex-row">
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="7">7</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="8">8</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="9">9</button>
+        </div>
+
+      </div>
+
+      <div class="flex-row">
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="4">4</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="5">5</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="6">6</button>
+        </div>
+
+      </div>
+
+      <div class="flex-row">
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="1">1</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="2">2</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="3">3</button>
+        </div>
+
+      </div>
+
+      <div class="flex-row">
+
+        <div class="wrapper">
+          <button class="comma" activity="comma" type="number" value=".">&#44;</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="number" activity="number" type="number" value="0">0</button>
+        </div>
+
+        <div class="wrapper">
+          <button class="clear"><i class="material-icons">&#xe14a;</i></button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="flex-column right">
+
+      <div class="wrapper">
+        <button class="operation" activity="operation" type="operation" value="-">&minus;</button>
+      </div>
+
+      <div class="wrapper">
+        <button class="operation" activity="operation" type="operation" value="+">&plus;</button>
+      </div>
+
+      <div class="wrapper">
+        <button class="equals"><span>=</span></button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <noscript>
+    <div>That application doesn't work without JavaScript.</div>
+  </noscript>
+
+  <script src="scripts/peako.js" type="text/javascript"></script>
+  <script src="scripts/math.min.js" type="text/javascript"></script>
+  <script src="scripts/main.js" type="text/javascript"></script>
+
+</body>
+
+</html>
