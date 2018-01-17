@@ -43,6 +43,24 @@ var util = {
 };
 
 var memory = {
+  // returns the last value of memory.values
+  getLastValue: function ( last ) {
+    return this.values.length && ( table[ last = util.last( this.values ) ] || !last.indexOf( last = 'root(' ) ) ? last : null;
+  },
+
+  // updates memory.current
+  update: function ( data, match ) {
+    return ( data = ( data = this.getLastValue() ) && table[ data ] ) && data.hooks && data.hooks.update ? data.hooks.update() : data && this.values.length && ( match = this.values.join( '' ).match( /(?:,-|\(-|^-)?(\d+(?:\.(?:$|\d+))?(?:e(?:[+-]?(?:$|\d+))?)?)$|(?:,-|\(-|^-)$/ ) ) ? ( match = util.last( this.current = ( data = ( match = match[ 0 ] ).charAt( 0 ) ) === '(' || data === ',' ? match.slice( 1 ) : match ), this.last = this.current === '-' ? 'number' : table[ match ].type ) : ( this.current = '', this.last = data ? data.type : 'none' );
+  },
+
+  // puts values to both memory.values and
+  // memory.display with replacing to the notation
+  push: function () {
+    $.merge( this.values, arguments );
+    $.merge( this.display, $.map( arguments, map, table ) );
+    return this;
+  },
+
   last: 'none',
   angles: 'deg',
   memory: '0',
@@ -57,25 +75,6 @@ var memory = {
   roots: {
     values: [],
     display: []
-  },
-
-  // returns the last value of memory.values
-  getLastValue: function ( last ) {
-    return this.values.length && ( table[ last = util.last( this.values ) ] || !last.indexOf( last = 'root(' ) ) ? last : null;
-  },
-
-  // updates memory.current
-  update: function ( data, match ) {
-    return ( ( data = ( data = this.getLastValue() ) && table[ data ] ) && data.hooks && data.hooks.update ? data.hooks.update() : data && this.values.length && ( match = this.values.join( '' ).match( /(?:,-|\(-|^-)?(\d+(?:\.(?:$|\d+))?(?:e(?:[+-]?(?:$|\d+))?)?)$|(?:,-|\(-|^-)$/ ) ) ? ( match = util.last( this.current = ( data = ( match = match[ 0 ] ).charAt( 0 ) ) === '(' || data === ',' ? match.slice( 1 ) : match ), this.last = this.current === '-' ? 'number' : table[ match ].type ) : ( this.current = '', this.last = data ? data.type : 'none' ) ), this;
-  },
-
-  // puts values to both memory.values and
-  // memory.display with replacing to the notation
-  push: function () {
-    $.merge( this.values, arguments );
-    $.merge( this.display, $.map( arguments, map, table ) );
-
-    return this;
   }
 };
 
@@ -157,7 +156,6 @@ var render = function () {
       result += '</span>';
     }
 
-    // in theory the .text works faster than the .html
     $display.removeClass( 'placeholder' )[ result.indexOf( '<' ) < 0 ? 'text' : 'html' ]( result );
   } else {
     $display.addClass( 'placeholder' ).text( '0' );
@@ -698,6 +696,7 @@ var table = function ( $ ) {
   math.import( imports, { override: true } );
 } )( math, memory );
 
+// math.js has "lazy functions", remove freezes
 math[ 'eval' ]( 'root(5, sin(32))' );
 
 } )( this.peako, this );
