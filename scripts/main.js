@@ -695,7 +695,9 @@ var table = function ( $ ) {
     };
   }, memory );
 
-  math[ 'import' ]( imports, { override: true } );
+  math.import( imports, { override: true } );
 } )( math, memory );
+
+math[ 'eval' ]( 'root(5, sin(32))' );
 
 } )( this.peako, this );

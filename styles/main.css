@@ -110,6 +110,7 @@ body, button, noscript div, #display, #mrc.enabled, #inverse.enabled {
 
 body {
   font: 300 18px Ubuntu;
+  background-color: #f1f3f3;
 }
 
 html, body {
@@ -119,10 +120,6 @@ html, body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-}
-
-body {
-  background-color: #f1f3f3;
 }
 
 .display {
