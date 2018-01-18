@@ -2,6 +2,15 @@
 
 'use strict';
 
+if ( 'serviceWorker' in navigator ) {
+  navigator.serviceWorker.register( 'service-worker.js' )
+    .then( function ( registration ) {
+      console.log( 'Registration succeeded. Scope is ' + registration.scope );
+    }, function ( ex ) {
+      console.log( 'Registration failed with ' + ex );
+    } );
+}
+
 // config the mathjs
 math.config( {
   number: 'BigNumber',
