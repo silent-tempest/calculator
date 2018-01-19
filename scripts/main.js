@@ -32,7 +32,7 @@ var util = {
         index = 0,
         step = overlapping ? 1 : substr.length;
 
-    for ( ; ~( index = string.indexOf( substr, index ) ); ++count, index += step ) {}
+    for ( ; ~( index = string.indexOf( substr, index ) ); ++count, index += step );
 
     return count;
   },
@@ -42,7 +42,6 @@ var util = {
     return util.nth( iterable, -1, value );
   },
 
-  // as last but nth
   nth: function ( iterable, i, value ) {
     i = iterable.length && ( i < 0 ? iterable.length + i : i );
 
@@ -58,8 +57,33 @@ var memory = {
   },
 
   // updates memory.current
-  update: function ( data, match ) {
-    return ( data = ( data = this.getLastValue() ) && table[ data ] ) && data.hooks && data.hooks.update ? data.hooks.update() : data && this.values.length && ( match = this.values.join( '' ).match( /(?:,-|\(-|^-)?(\d+(?:\.(?:$|\d+))?(?:e(?:[+-]?(?:$|\d+))?)?)$|(?:,-|\(-|^-)$/ ) ) ? ( match = util.last( this.current = ( data = ( match = match[ 0 ] ).charAt( 0 ) ) === '(' || data === ',' ? match.slice( 1 ) : match ), this.last = this.current === '-' ? 'number' : table[ match ].type ) : ( this.current = '', this.last = data ? data.type : 'none' );
+  update: function () {
+    var data = this.getLastValue(),
+        match;
+
+    if ( data ) {
+      data = table[ data ];
+    }
+
+    if ( data ) {
+      if ( data.hooks && data.hooks.update ) {
+        data.hooks.update();
+      } else if ( this.values.length &&
+        ( match = this.values.join( '' ).match( /(?:,-|\(-|^-)?(\d+(?:\.(?:$|\d+))?(?:e(?:[+-]?(?:$|\d+))?)?)$|(?:,-|\(-|^-)$/ ) ) )
+      {
+        match = match[ 0 ];
+        data = match.charAt( 0 );
+        this.current = data === '(' || data === ',' ? match.slice( 1 ) : match;
+        match = util.last( this.current );
+        this.last = this.current === '-' ? 'number' : table[ match ].type;
+      } else {
+        this.current = '';
+        this.last = data.type;
+      }
+    } else {
+      this.current = '';
+      this.last = 'none';
+    }
   },
 
   // puts values to both memory.values and
@@ -462,17 +486,15 @@ $( '.controls button' )
     };
   } )
   .touchmove( function ( event ) {
-    // In the Mozilla Firefox 'touchmove'
-    // event gets triggered on long press.
+    // In FF 'touchmove' event gets
+    // triggered on long press
     if ( this.lastTouch.x !== event.targetTouches[ 0 ].clientX || this.lastTouch.y !== event.targetTouches[ 0 ].clientY ) {
       this.touchend = true;
       $( this ).trigger( 'touchend' );
     }
   } )
   .touchend( function ( event ) {
-    this.className = ( ' ' + this.className + ' ' )
-      .replace( ' active ', ' ' )
-      .slice( 1, -1 );
+    $( this ).removeClass( 'active' );
   } );
 
 var $display = $( '#display' ),
@@ -482,47 +504,11 @@ var $display = $( '#display' ),
     MIN_FONT_SIZE = 27,
     MAX_FONT_SIZE = window.parseInt( $.style( $display[ 0 ], 'font-size' ), 10 );
 
-( function () {
-  var isTouched = function ( target ) {
-    for ( var i = touches.length - 1; i >= 0; --i ) {
-      if ( touches[ i ].target === target ) {
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  var touches = [];
-
-  var update = function ( event ) {
-    touches = event.touches;
-  };
-
-  $( window )
-    .touchstart( update )
-    .touchmove( update )
-    .touchend( update )
-    .touchcancel( update );
-
-  $buttons
-    .longtouch( function ( event, that ) {
-      if ( this.touchend || !isTouched( that = this ) ) {
-        return;
-      }
-
-      ( function touch () {
-        if ( that.touchend || !isTouched( that ) ) {
-          return;
-        }
-
-        listener.call( that );
-        window.setTimeout( touch, 100 );
-      } )();
-    }, function () {
-      this.touchend || listener.call( this );
-    } );
-} )();
+$buttons.touchend( function ( event ) {
+  if ( !this.touchend ) {
+    listener.call( this );
+  }
+} );
 
 $( '.clear' ).longtouch( clearAll, function () {
   this.touchend || clear();
@@ -577,7 +563,7 @@ $( '.equals' ).touchend( function () {
 $( '.memory' ).touchend( function () {
   if ( !this.touchend ) {
     if ( memory.valid && memory.calculated !== '0' && memory.calculated !== '-0' && memory.memory !== 'Infinity' && memory.memory !== '-Infinity' && memory.calculated.indexOf( 'i' ) < 0 ) {
-      memory.memory = '' + ( math[ this.value ]( memory.memory, math.eval( memory.calculated ) ) || 0 );
+      memory.memory = '' + ( math[ this.value ]( memory.memory, math[ 'eval' ]( memory.calculated ) ) || 0 );
       $mrc.toggleClass( 'enabled', memory.memory !== '0' );
     } else {
       error();
@@ -656,7 +642,7 @@ var table = function ( $ ) {
   table[ '(' ] = new Data( '(', 'bracket', 'none' );
   table[ ')' ] = new Data( ')', 'bracket', 'bracket' );
   table.i = new Data( 'i', 'number', 'constant' );
-  delete table[ 'brackets' ];
+  delete table.brackets;
 
   return $.forInRight( table, function ( data, value ) {
     data.rvalue = this( value.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1' ), 'g' );
