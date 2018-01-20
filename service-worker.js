@@ -2,14 +2,8 @@ var cache_name = 'v1';
 
 var paths = [
   'index.html',
-  'service-worker.js',
-  'drawable/icon-48.png',
-  'drawable/icon-96.png',
-  'drawable/icon-144.png',
-  'drawable/icon-192.png',
   'fonts/Google-Material-Icons.woff2',
   'fonts/Ubuntu-Light.ttf',
-  'fonts/Ubuntu-Regular.ttf',
   'scripts/main.js',
   'scripts/math.min.js',
   'scripts/peako.js',
