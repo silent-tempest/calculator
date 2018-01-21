@@ -246,13 +246,8 @@ var toStyle = function ( string ) {
 };
 
 var error = function () {
-  if ( !$( 'body' ).hasClass( 'error' ) ) {
-    window.navigator.vibrate( 25 );
-    $( 'body' ).addClass( 'error' );
-
-    window.setTimeout( function () {
-      $( 'body' ).removeClass( 'error' );
-    }, 25 );
+  if ( navigator.vibrate ) {
+    navigator.vibrate( 25 );
   }
 };
 

@@ -325,24 +325,6 @@ button.operation, button.equals {
   font-variant: small-caps;
 }
 
-body .error {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  top: 24px;
-  left: 24px;
-  right: initial;
-  background-color: #fb7730;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  opacity: 0.26;
-}
-
-body.error .error {
-  opacity: 1;
-}
-
 noscript {
   position: fixed;
   top: 0;
