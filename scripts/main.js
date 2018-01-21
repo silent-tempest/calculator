@@ -25,9 +25,7 @@
 
 'use strict';
 
-var use_cache = true;
-
-if ( use_cache && 'serviceWorker' in navigator ) {
+if ( 'serviceWorker' in navigator ) {
   navigator.serviceWorker.register( 'service-worker.js' )
     .then( function ( registration ) {
       console.log( 'Registration succeeded. Scope is ' + registration.scope );
