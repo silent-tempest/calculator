@@ -69,7 +69,8 @@ var util = {
     i = iterable.length && ( i < 0 ? iterable.length + i : i );
 
     return value !== undefined ?
-      iterable[ i ] = value : iterable[ i ];
+      iterable[ i ] = value :
+      iterable[ i ];
   }
 };
 
@@ -117,6 +118,11 @@ var memory = {
     return this;
   },
 
+  roots: {
+    values: [],
+    display: []
+  },
+
   last: 'none',
   angles: 'deg',
   memory: '0',
@@ -126,12 +132,7 @@ var memory = {
   values: [],
   display: [],
   valid: false,
-  round: 6,
-
-  roots: {
-    values: [],
-    display: []
-  }
+  round: 6
 };
 
 var calculate = function ( raw ) {
