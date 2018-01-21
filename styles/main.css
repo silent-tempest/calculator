@@ -165,7 +165,6 @@ html, body {
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap;
   overflow-x: auto;
-  left: 24px;
 }
 
 #display {
