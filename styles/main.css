@@ -124,16 +124,8 @@ body, button, noscript div, #display, #mrc.enabled, #inverse.enabled {
   color: rgba( 0, 0, 0, 0.87 );
 }
 
-#mrc.enabled, #inverse.enabled {
-  color: #fff;
-}
-
 #preview, #mrc, #inverse {
   color: rgba( 0, 0, 0, 0.54 );
-}
-
-#mrc, #inverse {
-  color: rgba( 255, 255, 255, 0.5 );
 }
 
 body {
@@ -208,7 +200,7 @@ html, body {
   position: absolute;
 }
 
-.dial {
+.dial, .top {
   background-color: #fafbfc;
 }
 
@@ -308,17 +300,17 @@ button.operation, button.equals {
   transform: translateY( -50% );
 }
 
-.controls .equals, .top button {
+.controls .equals {
   color: #fff;
-  background-color: #fb7730; /* fb7730 */
+  background-color: #9e9e9e;
 }
 
-.controls .equals.active, .top button.active {
-  background-color: #fc9056; /* fc9056 */
+.controls .equals.active {
+  background-color: #8a8a8a;
 }
 
 .clear {
-  color: rgba( 251, 119, 48, 0.54 ); /* 251, 119, 48 */
+  color: rgba( 158, 158, 158, 0.54 );
 }
 
 .memory, #angles, #mrc, #inverse {

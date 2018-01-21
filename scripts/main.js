@@ -170,11 +170,12 @@ var update = function () {
   var values = [
     '0', '1', '2', '3', '4',
     '5', '6', '7', '8', '9',
-    ')', 'pi', 'phi', 'e', '^2', 'Infinity', 'NaN', '!'
+    ')', 'pi', 'phi', 'e',
+    '^2', 'Infinity', 'NaN', '!'
   ];
 
   var search = function ( value ) {
-    return $.lastIndexOf( this, value ) >= 0;
+    return $.indexOf( this, value ) >= 0;
   };
 
   return function () {
@@ -507,7 +508,9 @@ $( '.controls button' )
   .touchmove( function ( event ) {
     // In FF 'touchmove' event gets
     // triggered on long press
-    if ( this.lastTouch.x !== event.targetTouches[ 0 ].clientX || this.lastTouch.y !== event.targetTouches[ 0 ].clientY ) {
+    if ( this.lastTouch.x !== event.targetTouches[ 0 ].clientX ||
+      this.lastTouch.y !== event.targetTouches[ 0 ].clientY )
+    {
       this.touchend = true;
       $( this ).trigger( 'touchend' );
     }
@@ -546,12 +549,7 @@ $( '.equals' ).touchend( function () {
     return error();
   }
 
-  if ( memory.calculated === 'Infinity' || memory.calculated === '-Infinity' ) {
-    memory.current = '';
-    memory.last = 'constant';
-    memory.values = memory.calculated.split( /\b/ );
-    memory.display = $.map( memory.values, map, table );
-  } else {
+  if ( !isInfinity( memory.calculated ) ) {
     memory.values = memory.calculated.split( '' );
     memory.display = $.map( memory.values, map, table );
 
@@ -561,6 +559,11 @@ $( '.equals' ).touchend( function () {
     } else {
       memory.update();
     }
+  } else {
+    memory.current = '';
+    memory.last = 'constant';
+    memory.values = memory.calculated.split( /\b/ );
+    memory.display = $.map( memory.values, map, table );
   }
 
   render();
@@ -579,10 +582,18 @@ $( '.equals' ).touchend( function () {
   } );
 } )();
 
+function DEBUG ( value ) {
+  alert( JSON.stringify( arguments.length > 1 ? argumentn : value, null, '\t' ) );
+}
+
+var isInfinity = function ( value ) {
+  return value === 'Infinity' || value === '-Infinity';
+};
+
 $( '.memory' ).touchend( function () {
   if ( !this.touchend ) {
-    if ( memory.valid && memory.calculated !== '0' && memory.calculated !== '-0' && memory.memory !== 'Infinity' && memory.memory !== '-Infinity' && memory.calculated.indexOf( 'i' ) < 0 ) {
-      memory.memory = '' + ( math[ this.value ]( memory.memory, math[ 'eval' ]( memory.calculated ) ) || 0 );
+    if ( memory.valid && memory.calculated !== '0' && memory.calculated !== '-0' && !isInfinity( memory.memory ) && memory.calculated !== 'NaN' && ( memory.calculated.indexOf( 'i' ) < 0 || isInfinity( memory.calculated ) ) ) {
+      memory.memory = '' + ( math[ this.value ]( memory.memory, memory.calculated ) || 0 );
       $mrc.toggleClass( 'enabled', memory.memory !== '0' );
     } else {
       error();
@@ -594,11 +605,11 @@ var $mrc = $( '#mrc' ).longtouch( function () {
   memory.memory = '0';
   $mrc.removeClass( 'enabled' );
 }, function () {
-  if ( this.touchend || memory.memory === '0' ) {
+  if ( this.touchend ) {
     return;
   }
 
-  if ( /[.\-+]$/.test( memory.current ) ) {
+  if ( memory.memory === '0' || util.last( memory.current ) === '.' ) {
     return error();
   }
 
@@ -615,7 +626,7 @@ var $mrc = $( '#mrc' ).longtouch( function () {
     memory.push( '(' );
   }
 
-  if ( save === 'Infinity' || save === '-Infinity' ) {
+  if ( isInfinity( save ) ) {
     memory.current = '';
     memory.last = 'constant';
     save = save.split( /\b/ );
@@ -657,7 +668,7 @@ var table = function ( $ ) {
   }, $ ) );
 
   table.Infinity = new Data( '\u221e', 'number', 'constant' );
-  table.NaN = new Data( 'Не число', 'number', 'constant' );
+  table.NaN = new Data( 'Not a Number', 'number', 'constant' );
   table[ '(' ] = new Data( '(', 'bracket', 'none' );
   table[ ')' ] = new Data( ')', 'bracket', 'bracket' );
   table.i = new Data( 'i', 'number', 'constant' );
@@ -711,6 +722,6 @@ var table = function ( $ ) {
 } )( math, memory );
 
 // math.js has "lazy functions", remove freezes
-math[ 'eval' ]( 'root(5, sin(32))' );
+math[ 'eval' ]( 'root(5, 32)' );
 
 } )( this.peako, this );
