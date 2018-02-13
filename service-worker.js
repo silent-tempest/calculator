@@ -2,7 +2,6 @@ var cache_name = 'v1';
 
 var paths = [
   'index.html',
-  'fonts/Google-Material-Icons.woff2',
   'fonts/Ubuntu-Light.ttf',
   'scripts/main.js',
   'scripts/math.min.js',

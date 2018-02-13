@@ -1,38 +1,13 @@
 /**
- * MIT License
- *
  * Copyright (c) 2017-2018 SILENT
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
+ * Released under the MIT License
  */
-;( function ( $, window, undefined ) {
+
+/* jshint esversion: 5, unused: true, undef: true */
+
+;( function ( $, math, window, undefined ) {
 
 'use strict';
-
-if ( 'serviceWorker' in navigator ) {
-  navigator.serviceWorker.register( 'service-worker.js' )
-    .then( function ( registration ) {
-      console.log( 'Registration succeeded. Scope is ' + registration.scope );
-    }, function ( ex ) {
-      console.log( 'Registration failed with ' + ex );
-    } );
-}
 
 // config the mathjs
 math.config( {
@@ -247,8 +222,8 @@ var toStyle = function ( string ) {
 };
 
 var error = function () {
-  if ( navigator.vibrate ) {
-    navigator.vibrate( 25 );
+  if ( window.navigator.vibrate ) {
+    window.navigator.vibrate( 25 );
   }
 };
 
@@ -316,6 +291,8 @@ var listener = function () {
 
         break;
       }
+
+      /* falls through */
 
     case 'function':
       if ( id === 'root' ) {
@@ -387,6 +364,8 @@ var listener = function () {
 
         break;
       }
+
+      /* falls through */
 
     case 'number':
       if ( type === 'number' && ( current === '0' || current === '-0' || /e[+-]?0/.test( current ) ) ) {
@@ -509,13 +488,13 @@ $( '.controls button' )
     // In FF 'touchmove' event gets
     // triggered on long press
     if ( this.lastTouch.x !== event.targetTouches[ 0 ].clientX ||
-      this.lastTouch.y !== event.targetTouches[ 0 ].clientY )
+         this.lastTouch.y !== event.targetTouches[ 0 ].clientY )
     {
       this.touchend = true;
       $( this ).trigger( 'touchend' );
     }
   } )
-  .touchend( function ( event ) {
+  .touchend( function () {
     $( this ).removeClass( 'active' );
   } );
 
@@ -526,21 +505,23 @@ var $display = $( '#display' ),
     MIN_FONT_SIZE = 27,
     MAX_FONT_SIZE = window.parseInt( $.style( $display[ 0 ], 'font-size' ), 10 );
 
-$buttons.touchend( function ( event ) {
+$buttons.touchend( function () {
   if ( !this.touchend ) {
     listener.call( this );
   }
 } );
 
-$( '.clear' ).longtouch( clearAll, function () {
-  this.touchend || clear();
+$( '#clear' ).longtouch( clearAll, function () {
+  if ( !this.touchend ) {
+    clear();
+  }
 } );
 
 var map = function ( value ) {
   return this[ value ].notation;
 };
 
-$( '.equals' ).touchend( function () {
+$( '#equals' ).touchend( function () {
   if ( this.touchend ) {
     return;
   }
@@ -581,10 +562,6 @@ $( '.equals' ).touchend( function () {
     }
   } );
 } )();
-
-function DEBUG ( value ) {
-  alert( JSON.stringify( arguments.length > 1 ? argumentn : value, null, '\t' ) );
-}
 
 var isInfinity = function ( value ) {
   return value === 'Infinity' || value === '-Infinity';
@@ -656,8 +633,8 @@ $( '#extend' ).touchend( function () {
   }
 } );
 
-var table = function ( $ ) {
-  var Data = function ( notation, activity, type, hooks ) {
+var table = function () {
+  var Data = function ( notation, activity, type /* , hooks */ ) {
     this.notation = notation;
     this.activity = activity;
     this.type = type;
@@ -677,7 +654,7 @@ var table = function ( $ ) {
   return $.forInRight( table, function ( data, value ) {
     data.rvalue = this( value.replace( /([.*+?^=!:${}()|\[\]\/\\])/g, '\\$1' ), 'g' );
   }, window.RegExp );
-}( $ );
+}();
 
 ( function ( math, memory ) {
   var root = math.nthRoot,
@@ -724,4 +701,4 @@ var table = function ( $ ) {
 // math.js has "lazy functions", remove freezes
 math[ 'eval' ]( 'root(5, 32)' );
 
-} )( this.peako, this );
+} )( this.peako, this.math, this );

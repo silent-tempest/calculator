@@ -6,31 +6,44 @@
 
 <head>
   <title>Calculator</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <!-- Set page charset. -->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <!-- Weird bullshit. -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="description" content="Big number Calculator for mobile devices." />
+  <!-- Tells the browser that the page is optimized for mobile devices. -->
   <meta name="HandheldFriendly" content="True" />
+  <!-- Disables automatic conversion of phone numbers and emails into links. -->
   <meta name="format-detection" content="telephone=no" />
   <meta name="format-detection" content="adress=no" />
+  <!-- Some Mobile Web Application stuff ("add to home screen"). -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="application-name" content="Calculator" />
   <meta name="apple-mobile-web-app-title" content="Calculator" />
+  <meta name="msapplication-starturl" content="index.html" />
+  <!-- Action Bar background color. -->
   <meta name="theme-color" content="#e6eaea" />
   <meta name="msapplication-navbutton-color" content="#e6eaea" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <meta name="msapplication-starturl" content="index.html" />
+  <!-- Adaptation for mobile devices. -->
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui, shrink-to-fit=no" />
+  <!-- Some SEO and copyright stuff.  -->
+  <meta name="description" content="Calculator for mobile devices" />
+  <meta name="keywords" content="calculator,big,number,silent,tempest" />
+  <meta name="author" content="SILENT - https://github.com/silent-tempest" />
+  <meta name="copyright" content="SILENT" />
+  <!-- Import styles and Web App Manifest. -->
   <link rel="stylesheet" href="styles/main.css" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" sizes="48x48" href="drawable/icon-48.png" />
-  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="drawable/icon-48.png" />
-  <link rel="icon" type="image/png" sizes="96x96" href="drawable/icon-96.png" />
-  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="drawable/icon-96.png" />
-  <link rel="icon" type="image/png" sizes="144x144" href="drawable/icon-144.png" />
-  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="drawable/icon-144.png" />
-  <link rel="icon" type="image/png" sizes="192x192" href="drawable/icon-192.png" />
-  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="drawable/icon-192.png" />
+  <!-- Import icons. -->
+  <link rel="icon" type="image/png" sizes="48x48" href="drawables/icon-48.png" />
+  <link rel="apple-touch-icon" type="image/png" sizes="48x48" href="drawables/icon-48.png" />
+  <link rel="icon" type="image/png" sizes="96x96" href="drawables/icon-96.png" />
+  <link rel="apple-touch-icon" type="image/png" sizes="96x96" href="drawables/icon-96.png" />
+  <link rel="icon" type="image/png" sizes="144x144" href="drawables/icon-144.png" />
+  <link rel="apple-touch-icon" type="image/png" sizes="144x144" href="drawables/icon-144.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="drawables/icon-192.png" />
+  <link rel="apple-touch-icon" type="image/png" sizes="192x192" href="drawables/icon-192.png" />
 </head>
 
 <body>
@@ -207,7 +220,7 @@
         </div>
 
         <div class="wrapper">
-          <button class="clear"><i class="material-icons">&#xe14a;</i></button>
+          <button id="clear">del</button>
         </div>
 
       </div>
@@ -225,7 +238,7 @@
       </div>
 
       <div class="wrapper">
-        <button class="equals"><span>=</span></button>
+        <button id="equals"><span>=</span></button>
       </div>
 
     </div>
@@ -236,9 +249,27 @@
     <div>That application doesn't work without JavaScript.</div>
   </noscript>
 
-  <script src="scripts/peako.js" type="text/javascript"></script>
-  <script src="scripts/math.min.js" type="text/javascript"></script>
-  <script src="scripts/main.js" type="text/javascript"></script>
+  <!-- jQuery + Lodash. -->
+  <script src="scripts/peako.js"></script>
+  <!-- Math library. -->
+  <script src="scripts/math.min.js"></script>
+  <!-- Main script. -->
+  <script src="scripts/main.js"></script>
+
+  <!-- Register the Service Worker ("add to home screen", caching). -->
+  <script>
+    // For development, better to disable it.
+    var __USE_CACHE = true;
+
+    if ( __USE_CACHE && 'serviceWorker' in navigator ) {
+      navigator.serviceWorker.register( 'service-worker.js' )
+        .then( function ( registration ) {
+          console.log( 'Registration succeeded. Scope is ' + registration.scope );
+        }, function ( ex ) {
+          console.log( 'Registration failed with ' + ex );
+        } );
+    }
+  </script>
 
 </body>
 
